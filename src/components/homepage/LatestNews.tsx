@@ -1,7 +1,15 @@
-import React from 'react'
+import React from "react";
+import NewsCard from "../reuseable/NewsCard";
 
 export default function LatestNews() {
   return (
-    <div>LatestNews</div>
-  )
+    <div className="section-padding">
+      <h2 className="section-heading">Latest News</h2>
+      <div className="card_div">
+        <NewsCard />
+        <NewsCard />
+        <NewsCard />
+      </div>
+    </div>
+  );
 }

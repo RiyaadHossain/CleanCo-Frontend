@@ -13,7 +13,7 @@ export default function PrimaryLayout({
 }) {
   const pathname = usePathname();
 
-  const noNav = ["/login"];
+  const noNav = ["/signup", "/signin"];
 
   if (noNav.includes(pathname)) {
     return (
