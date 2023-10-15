@@ -1,7 +1,23 @@
+"use client";
 import Link from "next/link";
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = {
+  name: string;
+  email: string;
+  age: string;
+  password: string;
+  contactNo: string;
+  address: string;
+};
 
 export default function SignUp() {
+  const { register, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data: any) => {
+    console.log(data);
+  };
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -14,7 +30,7 @@ export default function SignUp() {
           </p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Name</span>
@@ -24,6 +40,7 @@ export default function SignUp() {
                 placeholder="name"
                 className="input input-bordered"
                 required
+                {...register("name", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -35,6 +52,7 @@ export default function SignUp() {
                 placeholder="email"
                 className="input input-bordered"
                 required
+                {...register("email", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -46,6 +64,7 @@ export default function SignUp() {
                 placeholder="age"
                 className="input input-bordered"
                 required
+                {...register("contactNo", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -57,6 +76,7 @@ export default function SignUp() {
                 placeholder="password"
                 className="input input-bordered"
                 required
+                {...register("password", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -67,6 +87,7 @@ export default function SignUp() {
                 className="textarea textarea-bordered resize-none"
                 placeholder="Bio"
                 required
+                {...register("address", { required: true })}
               ></textarea>
             </div>
             <div className="form-control mt-6">

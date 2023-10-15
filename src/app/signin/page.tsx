@@ -1,6 +1,16 @@
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+type Inputs = {
+  email: string;
+  password: string;
+};
 export default function SignIn() {
+  const { register, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data: any) => {
+    console.log(data);
+  };
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -13,7 +23,7 @@ export default function SignIn() {
           </p>
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -23,6 +33,7 @@ export default function SignIn() {
                 placeholder="email"
                 className="input input-bordered"
                 required
+                {...register("email", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -34,6 +45,7 @@ export default function SignIn() {
                 placeholder="password"
                 className="input input-bordered"
                 required
+                {...register("password", { required: true })}
               />
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
