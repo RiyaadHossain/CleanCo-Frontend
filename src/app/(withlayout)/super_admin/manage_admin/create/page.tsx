@@ -1,7 +1,8 @@
 "use client";
 import { useAddAdminMutation } from "@/redux/api/adminApi";
-import React from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;
@@ -13,7 +14,7 @@ type Inputs = {
 };
 
 export default function CreateAdmin() {
-  const [addAdmin] = useAddAdminMutation();
+  const [addAdmin, { isError, isLoading, isSuccess }] = useAddAdminMutation();
 
   const {
     register,
@@ -26,6 +27,13 @@ export default function CreateAdmin() {
       await addAdmin(data);
     } catch (error) {}
   };
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Admin Create succesfully", { id: "success" });
+    if (isLoading)
+      toast.loading("Processing...", { id: "process", duration: 800 });
+    if (isError) toast.error("Failed to create", { id: "err" });
+  }, [isSuccess, isError, isLoading]);
 
   return (
     <div>

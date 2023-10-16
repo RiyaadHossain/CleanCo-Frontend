@@ -4,6 +4,7 @@ export enum ENUM_TAG_TYPE {
   booking = "booking",
   review = "review",
   cart = "cart",
+  category = "category",
 }
 
 export const tagTypes = [
@@ -12,4 +13,5 @@ export const tagTypes = [
   ENUM_TAG_TYPE.booking,
   ENUM_TAG_TYPE.review,
   ENUM_TAG_TYPE.cart,
+  ENUM_TAG_TYPE.category,
 ];

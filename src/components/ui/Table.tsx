@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 interface ITableProbs {
   rowItems: string[];
-  tableData: ReactNode;
+  tableData: ReactNode[];
 }
 
 export default function Table({ rowItems, tableData }: ITableProbs) {

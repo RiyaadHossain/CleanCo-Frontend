@@ -1,7 +1,7 @@
 import { ENUM_TAG_TYPE } from "../tagTypes";
 import { baseApi } from "./baseApi";
 
-const SERVICE_API = "/services";
+const SERVICE_API = "/cleaning-service";
 const serviceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     addService: build.mutation({

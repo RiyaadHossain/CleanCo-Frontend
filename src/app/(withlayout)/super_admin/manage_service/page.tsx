@@ -1,36 +1,55 @@
 "use client";
 import Table from "@/components/ui/Table";
-import { useGetServicesQuery } from "@/redux/api/serviceApi";
+import {
+  useDeleteServiceMutation,
+  useGetServicesQuery,
+} from "@/redux/api/serviceApi";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import moment from "moment";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 export default function ManageService() {
-  const rowItems = ["", "Name", "Job", "Favorite Color"];
+  const rowItems = ["", "Title", "Price", "Status", "Category", "Created At"];
 
   const { data } = useGetServicesQuery({ page: 1, limit: 100 });
-
-  const onDeleteHandle = () => {};
+  const [deleteService, { isLoading, isError, isSuccess }] =
+    useDeleteServiceMutation();
 
   const tableData = data?.data?.map((data: any, i: number) => (
-    <tr key={data.id} className="hover">
+    <tr key={data._id} className="hover">
       <th>{i + 1}</th>
-      <td>{data.name}</td>
-      <td>{data.email}</td>
-      <td>{data.age}</td>
-      <td>{data.contactNo}</td>
+      <td>{data.title}</td>
+      <td>{data.price}</td>
+      <td>{data.status}</td>
+      <td>{data.category.title}</td>
+      <td>{moment(data.createdAt).format("DD MMM YYYY")}</td>
       <td>
-        <div>
-          <button>
-            <AiFillDelete className="text-red-600" />
-          </button>
-          <button>
-            <AiFillDelete />
+        <div className="flex gap-3">
+          <Link href={`manage_service/edit/${data._id}`}>
+            <button className="btn btn-sm">
+              <AiFillEdit className="text-blue-500 text-2xl" />
+            </button>
+          </Link>
+          <button
+            onClick={() => deleteService(data._id)}
+            className="btn btn-sm"
+          >
+            <AiFillDelete className="text-red-600 text-2xl" />
           </button>
         </div>
       </td>
     </tr>
   ));
+
+  useEffect(() => {
+    if (isSuccess)
+      toast.success("Service Delete succesfully", { id: "success" });
+    if (isLoading)
+      toast.loading("Processing...", { id: "process", duration: 800 });
+    if (isError) toast.error("Failed to delete", { id: "err" });
+  }, [isSuccess, isError, isLoading]);
 
   return (
     <div>

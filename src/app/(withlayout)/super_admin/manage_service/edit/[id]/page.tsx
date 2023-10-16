@@ -1,7 +1,11 @@
 "use client";
 import { useGetCategoriesQuery } from "@/redux/api/categoryApi";
-import { useAddServiceMutation } from "@/redux/api/serviceApi";
-import React, { useEffect } from "react";
+import {
+  useAddServiceMutation,
+  useGetServiceQuery,
+  useUpdateServiceMutation,
+} from "@/redux/api/serviceApi";
+import React, { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -13,9 +17,12 @@ type Inputs = {
   description: string;
 };
 
-export default function CreateService() {
-  const [addService, { isSuccess, isLoading, isError }] =
-    useAddServiceMutation();
+export default function EditService({ params }: { params: any }) {
+  const id = params.id;
+  const [updateService, { isLoading, isError, isSuccess, error }] =
+    useUpdateServiceMutation();
+  const { data } = useGetServiceQuery(id);
+
   const { data: categories } = useGetCategoriesQuery({ page: 1, limit: 100 });
 
   const categoriesOption = categories?.data?.map((category: any) => (
@@ -24,20 +31,40 @@ export default function CreateService() {
     </option>
   ));
 
-  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const defaultValues = useMemo(() => {
+    return {
+      title: data?.data?.title || "",
+      price: data?.data?.price || "",
+      status: data?.data?.status || "",
+      category: data?.data?.category._id || "",
+      description: data?.data?.description || "",
+    };
+  }, [data]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data: any) => {
-    data.price = Number(data.price);
-    addService(data);
-    reset();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>({ defaultValues: defaultValues });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [reset, defaultValues]);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
+    try {
+      data.price = Number(data.price);
+      await updateService({ id, data });
+    } catch (error) {}
   };
 
   useEffect(() => {
     if (isSuccess)
-      toast.success("Service Create succesfully", { id: "success" });
+      toast.success("Service Update succesfully", { id: "success" });
     if (isLoading)
       toast.loading("Processing...", { id: "process", duration: 800 });
-    if (isError) toast.error("Failed to create", { id: "err" });
+    if (isError) toast.error("Failed to update", { id: "err" });
   }, [isSuccess, isError, isLoading]);
 
   return (
@@ -106,7 +133,7 @@ export default function CreateService() {
             ></textarea>
           </div>
           <div className="form-control mt-6">
-            <button className="btn btn-primary">Create</button>
+            <button className="btn btn-primary">Update</button>
           </div>
         </form>
       </div>
