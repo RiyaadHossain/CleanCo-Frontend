@@ -1,15 +1,36 @@
+"use client";
 import Table from "@/components/ui/Table";
+import { useGetServicesQuery } from "@/redux/api/serviceApi";
 import Link from "next/link";
 import React from "react";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 export default function ManageService() {
   const rowItems = ["", "Name", "Job", "Favorite Color"];
-  const tableData = [
-    { id: 1, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 2, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 3, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 4, name: "Someone", job: "Software Developer", color: "BlueSky" },
-  ];
+
+  const { data } = useGetServicesQuery({ page: 1, limit: 100 });
+
+  const onDeleteHandle = () => {};
+
+  const tableData = data?.data?.map((data: any, i: number) => (
+    <tr key={data.id} className="hover">
+      <th>{i + 1}</th>
+      <td>{data.name}</td>
+      <td>{data.email}</td>
+      <td>{data.age}</td>
+      <td>{data.contactNo}</td>
+      <td>
+        <div>
+          <button>
+            <AiFillDelete className="text-red-600" />
+          </button>
+          <button>
+            <AiFillDelete />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ));
 
   return (
     <div>

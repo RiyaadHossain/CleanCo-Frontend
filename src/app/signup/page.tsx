@@ -1,7 +1,11 @@
 "use client";
+import { useSignUpMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/auth.services";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;
@@ -13,10 +17,27 @@ type Inputs = {
 };
 
 export default function SignUp() {
+  const router = useRouter();
+  const [signUp, { isSuccess, isLoading, isError }] = useSignUpMutation();
+
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data: any) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
+    data.age = Number(data.age);
+    const res = await signUp(data);
+    //@ts-ignore
+    const accessToken = res.data.data.accessToken;
+    storeUserInfo({ accessToken });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Signed In succesfully", { id: "success" });
+      router.push("/");
+    }
+    if (isLoading)
+      toast.loading("Processing...", { id: "process", duration: 800 });
+    if (isError) toast.error("Failed to sign in", { id: "err" });
+  }, [isSuccess, isError, isLoading, router]);
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -62,6 +83,18 @@ export default function SignUp() {
               <input
                 type="number"
                 placeholder="age"
+                className="input input-bordered"
+                required
+                {...register("age", { required: true })}
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">ContactNo</span>
+              </label>
+              <input
+                type="number"
+                placeholder="contactNo"
                 className="input input-bordered"
                 required
                 {...register("contactNo", { required: true })}

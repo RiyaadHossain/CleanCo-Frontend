@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface ITableProbs {
   rowItems: string[];
-  tableData: any[];
+  tableData: ReactNode;
 }
 
 export default function Table({ rowItems, tableData }: ITableProbs) {
@@ -16,16 +16,7 @@ export default function Table({ rowItems, tableData }: ITableProbs) {
             ))}
           </tr>
         </thead>
-        <tbody>
-          {tableData?.map((data) => (
-            <tr key={data.id} className="hover">
-              <th>{data.id}</th>
-              <td>{data.name}</td>
-              <td>{data.job}</td>
-              <td>{data.color}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody>{tableData}</tbody>
       </table>
     </div>
   );

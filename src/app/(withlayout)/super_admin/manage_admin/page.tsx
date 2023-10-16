@@ -1,15 +1,58 @@
+"use client";
 import Table from "@/components/ui/Table";
+import {
+  useDeleteAdminMutation,
+  useGetAdminsQuery,
+} from "@/redux/api/adminApi";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 export default function ManageAdmin() {
-  const rowItems = ["", "Name", "email", "Favorite Color"];
-  const tableData = [
-    { id: 1, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 2, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 3, name: "Someone", job: "Software Developer", color: "BlueSky" },
-    { id: 4, name: "Someone", job: "Software Developer", color: "BlueSky" },
-  ];
+  const rowItems = ["", "Name", "email", "Age", "Contact No", "Actions"];
+
+  const { data } = useGetAdminsQuery({ role: "admin" });
+  const [deleteAdmin, { isLoading, isSuccess, isError }] =
+    useDeleteAdminMutation();
+
+  const handleDelete = (id: string) => {
+    deleteAdmin(id);
+  };
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Admin Delete succesfully", { id: "success" });
+    if (isLoading)
+      toast.loading("Processing...", { id: "process", duration: 800 });
+    if (isError) toast.error("Failed to delete", { id: "err" });
+  }, [isSuccess, isError, isLoading]);
+
+  const tableData = data?.data?.map((data: any, i: number) => (
+    <tr key={data._id} className="hover">
+      <th>{i + 1}</th>
+      <td>{data.name}</td>
+      <td>{data.email}</td>
+      <td>{data.age}</td>
+      <td>{data.contactNo}</td>
+      <td>
+        <td>
+          <div className="flex gap-3">
+            <Link href={`manage_admin/edit/${data._id}`}>
+              <button className="btn btn-sm">
+                <AiFillEdit className="text-blue-500 text-2xl" />
+              </button>
+            </Link>
+            <button
+              onClick={() => handleDelete(data._id)}
+              className="btn btn-sm"
+            >
+              <AiFillDelete className="text-red-600 text-2xl" />
+            </button>
+          </div>
+        </td>
+      </td>
+    </tr>
+  ));
 
   return (
     <div>

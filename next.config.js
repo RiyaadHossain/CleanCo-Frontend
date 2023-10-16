@@ -2,7 +2,7 @@
 const nextConfig = {
     images: {
         domains: [
-            'daisyui.com', 'images.pexels.com'
+            'daisyui.com', 'images.pexels.com', 'cdn-icons-png.flaticon.com'
         ]
     }
 }

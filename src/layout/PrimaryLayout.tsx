@@ -4,8 +4,7 @@ import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Provider } from "react-redux";
-import { store } from "@/redux/store";
+import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function PrimaryLayout({
@@ -34,23 +33,23 @@ export default function PrimaryLayout({
 
   if (noNav.includes(pathname)) {
     return (
-      <Provider store={store}>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            {children}
+            <Toaster />
+          </body>
         </html>
-      </Provider>
     );
   }
 
   return (
-    <Provider store={store}>
       <html lang="en">
         <body className={inter.className}>
           <Navbar />
           {children}
+          <Toaster />
           <Footer />
         </body>
       </html>
-    </Provider>
   );
 }
