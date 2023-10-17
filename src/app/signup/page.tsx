@@ -31,12 +31,12 @@ export default function SignUp() {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Signed In succesfully", { id: "success" });
+      toast.success("Signed Up succesfully", { id: "success" });
       router.push("/");
     }
     if (isLoading)
       toast.loading("Processing...", { id: "process", duration: 800 });
-    if (isError) toast.error("Failed to sign in", { id: "err" });
+    if (isError) toast.error("Failed to sign up", { id: "err" });
   }, [isSuccess, isError, isLoading, router]);
 
   return (

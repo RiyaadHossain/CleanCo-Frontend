@@ -20,6 +20,13 @@ const reviewApi = baseApi.injectEndpoints({
       }),
       providesTags: [ENUM_TAG_TYPE.review],
     }),
+    getReviewsByServiceId: build.query({
+      query: (serviceId) => ({
+        url: `${REVIEW_API}/${serviceId}`,
+        method: "GET",
+      }),
+      providesTags: [ENUM_TAG_TYPE.review],
+    }),
     getReview: build.query({
       query: (id: string) => ({
         url: `${REVIEW_API}/${id}`,
@@ -47,6 +54,7 @@ const reviewApi = baseApi.injectEndpoints({
 
 export const {
   useGetReviewsQuery,
+  useGetReviewsByServiceIdQuery,
   useGetReviewQuery,
   useAddReviewMutation,
   useUpdateReviewMutation,
