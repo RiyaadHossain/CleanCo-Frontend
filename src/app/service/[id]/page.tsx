@@ -1,17 +1,30 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 import Reviews from "@/components/ui/Reviews";
-import { useAddBookingMutation } from "@/redux/api/bookingApi";
+import {
+  useAddBookingMutation,
+  useGetBookingsQuery,
+} from "@/redux/api/bookingApi";
+import {
+  useAddCartMutation,
+  useDeleteCartMutation,
+  useGetCartsByServiceIdQuery,
+  useGetCartsQuery,
+} from "@/redux/api/cartApi";
 import { useGetServiceQuery } from "@/redux/api/serviceApi";
 import { getUserInfo } from "@/services/auth.services";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function ServiceDetails({ params }: { params: { id: string } }) {
   const [date, setDate] = useState("");
   const [addBooking] = useAddBookingMutation();
+  const [addToCart, { isError, isLoading, isSuccess }] = useAddCartMutation();
+  const [removeFromCart] = useDeleteCartMutation();
 
   const id = params.id;
+  const { data: cartData } = useGetCartsByServiceIdQuery(id);
+
   const { data } = useGetServiceQuery(id);
 
   const serviceData = data?.data;
@@ -24,7 +37,29 @@ export default function ServiceDetails({ params }: { params: { id: string } }) {
     }
     const data = { service: id, serviceDate: date };
     addBooking(data);
-    toast.success("Thanks for booking our service 😊")
+    toast.success("Thanks for booking our service 😊");
+  };
+
+  const handleAddToCart = () => {
+    addToCart({ service: id });
+  };
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Added to succesfully", { id: "success" });
+
+    if (isLoading)
+      toast.loading("Processing...", { id: "process", duration: 800 });
+    if (isError) toast.error("Failed to add to cart", { id: "err" });
+  }, [isSuccess, isError, isLoading]);
+
+  //@ts-ignore
+  const userId = getUserInfo()._id;
+  let alreadyAddedToCart = cartData?.data?.find(
+    (cart: any) => cart?.user?._id == userId
+  );
+
+  const handleRemoveFromCart = () => {
+    removeFromCart(alreadyAddedToCart._id);
   };
 
   return (
@@ -50,16 +85,33 @@ export default function ServiceDetails({ params }: { params: { id: string } }) {
           <p>{serviceData?.description}</p>
         </div>
         <div className="text-end flex gap-4">
+          {!!alreadyAddedToCart ? (
+            <button
+              onClick={handleRemoveFromCart}
+              disabled={!userInfo}
+              className="btn btn-accent btn-sm"
+            >
+              Remove From Cart
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={!userInfo}
+              className="btn btn-secondary btn-sm"
+            >
+              Add To Cart
+            </button>
+          )}
           <input
             onChange={(e) => setDate(e.target.value)}
             type="date"
             placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-xs input-sm"
           />
           <button
             onClick={handleBookService}
             disabled={!userInfo}
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm"
           >
             Book Now
           </button>
