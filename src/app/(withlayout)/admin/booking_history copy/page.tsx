@@ -1,14 +1,19 @@
 "use client";
 import Table from "@/components/ui/Table";
 import { useGetBookingsQuery } from "@/redux/api/bookingApi";
+import { useGetServicesQuery } from "@/redux/api/serviceApi";
 import { getUserInfo } from "@/services/auth.services";
 import moment from "moment";
+import Link from "next/link";
 import React from "react";
 
 export default function BookingHistory() {
   const rowItems = ["", "Title", "Price", "Status", "Created At"];
 
-  const { data } = useGetBookingsQuery({ limit: 1000 });
+  //@ts-ignore
+  const userId = getUserInfo()._id;
+
+  const { data } = useGetBookingsQuery({ orderBy: userId });
 
   const tableData = data?.data?.map((data: any, i: number) => {
     let badgeColor = "badge-primary";

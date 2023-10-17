@@ -6,10 +6,10 @@ export default function SideBarItems({ role }: { role: string }) {
   const userItems = (
     <>
       <li>
-        <a>My Services</a>
+        <Link href={`/${role}/my_services`}>My Services</Link>
       </li>
       <li>
-        <a>Booking History</a>
+        <Link href={`/${role}/booking_history`}>Booking History</Link>
       </li>
     </>
   );
@@ -28,6 +28,9 @@ export default function SideBarItems({ role }: { role: string }) {
       <li>
         <Link href={`/${role}/booking_history`}>Booking History</Link>
       </li>
+      <li>
+        <Link href={`/${role}/manage_booking`}>Manage Booking</Link>
+      </li>
     </>
   );
 
@@ -41,6 +44,9 @@ export default function SideBarItems({ role }: { role: string }) {
       </li>
       <li>
         <Link href={`/${role}/booking_history`}>Booking History</Link>
+      </li>
+      <li>
+        <Link href={`/${role}/manage_booking`}>Manage Booking</Link>
       </li>
     </>
   );
