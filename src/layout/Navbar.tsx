@@ -4,8 +4,10 @@ import { useGetCartsQuery } from "@/redux/api/cartApi";
 import { getUserInfo, removeUserInfo } from "@/services/auth.services";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
   const userInfo = getUserInfo();
   //@ts-ignore
   const userId = userInfo._id;
@@ -16,6 +18,7 @@ export default function Navbar() {
 
   const handleLogOut = () => {
     removeUserInfo("accessToken");
+    router.push("/");
     window.location.reload();
   };
 
