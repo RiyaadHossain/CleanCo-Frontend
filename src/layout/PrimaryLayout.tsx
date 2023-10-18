@@ -33,6 +33,10 @@ export default function PrimaryLayout({
     "/user",
     "/user/my_services",
     "/user/booking_history",
+    "/super_admin/manage_booking",
+    "/admin/manage_booking",
+    "/admin/booking_history",
+    "/admin/manage_category",
   ];
 
   if (noNav.includes(pathname)) {

@@ -3,8 +3,15 @@ import { ENUM_USER_ROLE } from "@/enums/common";
 import Link from "next/link";
 
 export default function SideBarItems({ role }: { role: string }) {
+  const defaultItems = (
+    <li>
+      <Link href={`/${role}`}>Dashboard Home</Link>
+    </li>
+  );
+
   const userItems = (
     <>
+      {defaultItems}
       <li>
         <Link href={`/${role}/my_services`}>My Services</Link>
       </li>
@@ -16,6 +23,7 @@ export default function SideBarItems({ role }: { role: string }) {
 
   const superAdminItems = (
     <>
+      {defaultItems}
       <li>
         <Link href={`/${role}/manage_admin`}>Manage Admin</Link>
       </li>
@@ -39,6 +47,7 @@ export default function SideBarItems({ role }: { role: string }) {
 
   const adminItems = (
     <>
+      {defaultItems}
       <li>
         <Link href={`/${role}/manage_service`}>Manage Service</Link>
       </li>
