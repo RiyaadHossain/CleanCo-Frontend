@@ -1,19 +1,23 @@
-import { FaHome } from "react-icons/fa";
+import { useGetCategoriesQuery } from "@/redux/api/categoryApi";
 import CategoryCard from "../reuseable/CategoryCard";
 
 export default function CategorySection() {
-  const categories = [
-    { id: 1, title: "Home Cleaning" },
-    { id: 2, title: "Garden Cleaning" },
-    { id: 3, title: "Office Cleaning" },
-    { id: 3, title: "Office Cleaning" },
-  ];
+  const { data } = useGetCategoriesQuery({ limit: 1000 });
+
+  const categories = data?.data?.map((category: any) => ({
+    id: category?._id,
+    title: category?.title,
+  }));
 
   return (
     <div className="section-padding">
       <div className="card_div">
-        {categories.map((category) => (
-          <CategoryCard key={category.id} title={category.title} />
+        {categories?.map((category: any) => (
+          <CategoryCard
+            key={category.id}
+            id={category.id}
+            title={category.title}
+          />
         ))}
       </div>
     </div>

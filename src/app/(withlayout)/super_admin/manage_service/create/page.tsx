@@ -80,6 +80,7 @@ export default function CreateService() {
             >
               <option value="available">Avaiable</option>
               <option value="unavailable">Unavaiable</option>
+              <option value="upcoming">Upcoming</option>
             </select>
           </div>
           <div className="form-control">

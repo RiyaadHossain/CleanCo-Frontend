@@ -4,7 +4,11 @@ import ServiceCard from "../reuseable/ServiceCard";
 import { useGetServicesQuery } from "@/redux/api/serviceApi";
 
 export default function AvailableService() {
-  const { data } = useGetServicesQuery({ page: 1, limit: 100 });
+  const { data } = useGetServicesQuery({
+    page: 1,
+    limit: 100,
+    status: "upcoming",
+  });
 
   return (
     <div className="section-padding">

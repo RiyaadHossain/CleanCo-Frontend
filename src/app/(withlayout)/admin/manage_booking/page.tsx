@@ -5,7 +5,7 @@ import {
   useUpdateBookingMutation,
 } from "@/redux/api/bookingApi";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function BookingHistory() {
@@ -23,7 +23,8 @@ export default function BookingHistory() {
 
   const rowItems = ["", "Title", "Price", "Status", "Order By", "Created At"];
 
-  const { data } = useGetBookingsQuery({ limit: 1000, status: "pending" });
+  const query: Record<string, unknown> = { limit: 1000, status: "pending" };
+  const { data } = useGetBookingsQuery(query);
 
   const tableData = data?.data?.map((data: any, i: number) => {
     let badgeColor = "badge-primary";
@@ -67,11 +68,6 @@ export default function BookingHistory() {
       <h2 className="text-3xl font-bold">Manage Service Page</h2>
       <div className="mt-12">
         <div className="flex justify-between items-center mb-6">
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
         </div>
         {tableData?.length ? (
           <Table rowItems={rowItems} tableData={tableData} />

@@ -13,9 +13,10 @@ const contentApi = baseApi.injectEndpoints({
       invalidatesTags: [ENUM_TAG_TYPE.content],
     }),
     getContents: build.query({
-      query: () => ({
+      query: (arg: Record<string, any>) => ({
         url: CONTENT_API,
         method: "GET",
+        params: arg,
       }),
       providesTags: [ENUM_TAG_TYPE.content],
     }),

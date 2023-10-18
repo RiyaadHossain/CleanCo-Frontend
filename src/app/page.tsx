@@ -11,7 +11,7 @@ import UpcomingService from "@/components/homepage/UpcomingService";
 import { useGetContentsQuery } from "@/redux/api/contentApi";
 
 export default function Home() {
-  const { data } = useGetContentsQuery();
+  const { data } = useGetContentsQuery({});
   const isFAQVisible =
     data?.data?.find((content: any) => content.title == "FAQ")?.status ==
     "visible";
@@ -23,8 +23,6 @@ export default function Home() {
   const isNewsVisible =
     data?.data?.find((content: any) => content.title == "News")?.status ==
     "visible";
-
-  console.log(isFAQVisible);
 
   return (
     <main>

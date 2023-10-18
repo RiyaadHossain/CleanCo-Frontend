@@ -5,15 +5,18 @@ import {
   useGetServicesQuery,
 } from "@/redux/api/serviceApi";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import toast from "react-hot-toast";
 
 export default function ManageService() {
   const rowItems = ["", "Title", "Price", "Status", "Category", "Created At"];
+  const [serachTerm, setSearchTerm] = useState("");
 
-  const { data } = useGetServicesQuery({ page: 1, limit: 100 });
+  const query: Record<string, unknown> = { page: 1, limit: 100 };
+  query["searchTerm"] = serachTerm;
+  const { data } = useGetServicesQuery(query);
   const [deleteService, { isLoading, isError, isSuccess }] =
     useDeleteServiceMutation();
 
@@ -51,12 +54,15 @@ export default function ManageService() {
     if (isError) toast.error("Failed to delete", { id: "err" });
   }, [isSuccess, isError, isLoading]);
 
+  const handleSearch = (searchTerm: string) => {};
+
   return (
     <div>
       <h2 className="text-3xl font-bold">Manage Service Page</h2>
       <div className="mt-12">
         <div className="flex justify-between items-center mb-6">
           <input
+            onChange={(e) => setSearchTerm(e.target.value)}
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-xs"

@@ -16,7 +16,7 @@ export default function ContentManagement() {
   const rowItems = ["", "Title", "Status", "Created At"];
 
   const [searchTerm, setSearchTerm] = useState("");
-  const query: Record<string, unknown> = { page: 1, limit: 100 };
+  const query: Record<string, unknown> = { page: 1, limit: 100};
   query["searchTerm"] = searchTerm;
   const { data } = useGetContentsQuery(query);
   const [deleteContent, { isLoading, isError, isSuccess }] =
