@@ -7,7 +7,7 @@ export default function AvailableService() {
   const { data } = useGetServicesQuery({
     page: 1,
     limit: 100,
-    status: "upcoming",
+    status: "available",
   });
 
   return (
